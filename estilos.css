@@ -1,0 +1,30 @@
+
+#descripcion{
+  background-color: bisque;
+  padding-top: 15px;
+  padding-bottom: 100px;
+  text-align: left;
+}
+  /* Restaurar los estilos predeterminados de la barra de navegación */
+  .navbar .container-fluid {
+    overflow: hidden;
+  }
+  
+  /* Estilo para los enlaces de la barra de navegación */
+  .navbar a {
+    color: black; /* Color de texto */
+    text-decoration: none; /* Quitar subrayado */
+    padding: 14px 20px; /* Espaciado interno */
+  }
+
+  /* ESTE ES EL ESTILO DE CARRUSEL */
+  /* Ajusta el tamaño de las imágenes */
+  .carousel-item img {
+      max-height: 450px; /* Cambia este valor según sea necesario */
+  }
+
+  /* Ajusta el tamaño del contenedor del carrusel y lo centra */
+  #carouselExampleCaptions {
+      max-width: 800px; /* Cambia este valor según sea necesario */
+      margin: auto; /* Centra el carrusel horizontalmente */
+  }

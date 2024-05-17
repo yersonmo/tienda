@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razas de Gatos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #catBreeds {
+            margin-top: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+        #catBreeds li {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        #catBreeds img {
+            max-width: 150px;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+        #catBreeds div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Razas de Gatos</h1>
+    <button id="fetchBreedsBtn">Mostrar Razas de Gatos</button>
+    <ul id="catBreeds"></ul>
+
+    <script>
+        document.getElementById('fetchBreedsBtn').addEventListener('click', fetchCatBreeds);
+
+        async function fetchCatBreeds() {
+            const apiUrl = 'https://api.thecatapi.com/v1/breeds';
+            const apiKey = 'live_BCFjC7G7AGvKxxyKLFb0x0jkbsKv8iuICrK9cFK8jFrs5i6ccXyziRiDu7MSBuKi'; // Reemplaza esto con tu clave de API de The Cat API
+
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'x-api-key': apiKey
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                displayCatBreeds(data);
+            } catch (error) {
+                console.error('Error fetching cat breeds:', error);
+                alert('Hubo un error al obtener las razas de gatos. Por favor, inténtalo de nuevo.');
+            }
+        }
+
+        async function fetchCatImage(breedId) {
+            const imageUrl = `https://api.thecatapi.com/v1/images/search?breed_id=${breedId}&limit=1`;
+            const response = await fetch(imageUrl, {
+                headers: {
+                    'x-api-key': 'live_BCFjC7G7AGvKxxyKLFb0x0jkbsKv8iuICrK9cFK8jFrs5i6ccXyziRiDu7MSBuKi' // Reemplaza esto con tu clave de API de The Cat API
+                }
+            });
+            const data = await response.json();
+            return data[0]?.url || '';
+        }
+
+        async function displayCatBreeds(breeds) {
+            const breedsList = document.getElementById('catBreeds');
+            breedsList.innerHTML = ''; // Limpiar la lista antes de agregar nuevos elementos
+            if (breeds.length === 0) {
+                breedsList.innerHTML = '<li>No se encontraron razas de gatos.</li>';
+            } else {
+                for (const breed of breeds) {
+                    const listItem = document.createElement('li');
+                    const imageUrl = await fetchCatImage(breed.id);
+                    listItem.innerHTML = `
+                        <img src="${imageUrl}" alt="${breed.name}">
+                        <div>
+                            <h3>${breed.name}</h3>
+                            <p>${breed.description}</p>
+                        </div>
+                    `;
+                    breedsList.appendChild(listItem);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
